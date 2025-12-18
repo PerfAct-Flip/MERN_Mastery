@@ -8,7 +8,10 @@ import Accordion from './components/AccordionItem';
 import ImageCarousel from './components/ImageCarousel';
 import SimpleCalculatorUI from './components/SimpleCalculatorUI';
 import RecipeCard from './components/RecipeCard';
-
+import FilterableList from './components/FilterableList';
+import TabManager from './components/TabManager';
+import FormValidation from'./components/FormValidation'
+import GithubUserCard from './components/GithubUserCard';
 interface ProjectProps {
   onGoBack: () => void;
   title?: string;
@@ -66,6 +69,30 @@ function App() {
       id: 'recipecard',
       title: '7. Recipe Card',
       component: RecipeCard,
+      description: 'A project for handling complex logic and input.'
+    },
+    {
+      id: 'filterableList',
+      title: '8. Filterable List',
+      component: FilterableList,
+      description: 'A project for handling complex logic and input.'
+    },
+    {
+      id: 'tabmanager',
+      title: '9. Tab Manager',
+      component: TabManager,
+      description: 'A project for handling complex logic and input.'
+    },
+    {
+      id: 'formvalidation',
+      title: '9. Form Validation',
+      component: FormValidation,
+      description: 'A project for handling complex logic and input.'
+    },
+    {
+      id: 'githubusercard',
+      title: '10. Github User Card',
+      component: GithubUserCard,
       description: 'A project for handling complex logic and input.'
     },
     {
