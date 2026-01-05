@@ -1,0 +1,256 @@
+
+<!doctype html>
+<p style="opacity: 0">if I were you, I would start reading from the very last line ;)</p>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>change the rules</title>
+  <style>
+    /* Basic styles for the page */
+    body {
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+        Arial, sans-serif;
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      overflow: hidden;
+      /* Hide scrollbars caused by hydras going off-screen */
+      margin: 0;
+      padding: 0;
+    }
+
+    /* The main container for the message */
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    /* Styling for the "All hydra's cleared" message */
+    #cleared-message {
+      font-size: 2rem;
+      color: #4caf50;
+    }
+
+    /* Styling for each hydra box */
+    .hydra {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background-color: #4caf50;
+      /* Changed to green */
+      border: 2px solid #388e3c;
+      /* Changed to a darker green */
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: grab;
+      user-select: none;
+      /* Prevents text selection while dragging */
+      z-index: 1000;
+      transition: transform 0.1s ease-out;
+    }
+
+    .hydra:active {
+      cursor: grabbing;
+      transform: scale(1.05);
+      z-index: 1001;
+    }
+
+    /* The close button on the hydra */
+    .hydra-close {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 24px;
+      height: 24px;
+      background-color: #f44336;
+      /* Changed to red */
+      color: white;
+      border: 1px solid white;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .hydra-close:hover {
+      background-color: #c62828;
+      /* Changed to a darker red */
+      color: #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 id="cleared-message" style="display: none">
+      All hydra's cleared. Flag:
+    </h1>
+    <h2 id="flag"></h2>
+  </div>
+
+  <script>
+    function setCookie(name, value, days) {
+      let expires = "";
+      if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+    function getCookie(name) {
+      const nameEQ = name + "=";
+      const ca = document.cookie.split(";");
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == " ") c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    // --- Hydra Logic ---
+
+    const clearedMessage = document.getElementById("cleared-message");
+    const flagElement = document.getElementById("flag");
+    const part_one = "ZGJkdGh7bm";
+
+    /**
+     * Creates a single hydra element and adds it to the page.
+     */
+    function createHydra() {
+      const hydra = document.createElement("div");
+      hydra.className = "hydra";
+      hydra.textContent = "Hydra";
+
+      // Set a random initial position
+      const randomTop = Math.random() * (window.innerHeight - 150);
+      const randomLeft = Math.random() * (window.innerWidth - 150);
+      hydra.style.top = `${randomTop}px`;
+      hydra.style.left = `${randomLeft}px`;
+
+      // Create the close button
+      const closeButton = document.createElement("div");
+      closeButton.className = "hydra-close";
+      closeButton.textContent = "X";
+
+      // Event listener for closing a hydra
+      closeButton.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevent the drag event from firing
+
+        // Remove the clicked hydra
+        hydra.remove();
+
+        // Get current count, add 1 (remove 1, add 2), and update cookie
+        let currentCount = parseInt(getCookie("hydraCount") || "0", 10);
+        setCookie("hydraCount", currentCount + 1, 7);
+
+        // Create two new hydras
+        createHydra();
+        createHydra();
+      });
+
+      hydra.appendChild(closeButton);
+      document.body.appendChild(hydra);
+
+      // Make the hydra draggable
+      makeDraggable(hydra);
+    }
+    const second_part = "9fY29va2llc";
+
+    /**
+     * Makes an HTML element draggable.
+     * @param {HTMLElement} element - The element to make draggable.
+     */
+    function makeDraggable(element) {
+      let pos1 = 0,
+        pos2 = 0,
+        pos3 = 0,
+        pos4 = 0;
+
+      element.onmousedown = dragMouseDown;
+
+      function dragMouseDown(e) {
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+      }
+
+      function elementDrag(e) {
+        e.preventDefault();
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        element.style.top = element.offsetTop - pos2 + "px";
+        element.style.left = element.offsetLeft - pos1 + "px";
+      }
+
+      function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+    function decodeFlag(encoded, key) {
+      const decoy1 = "some_random_string";
+      let decoded = "";
+      for (let i = 0; i < encoded.length; i++) {
+        decoded += String.fromCharCode(
+          (encoded[i] - 10) ^ key.charCodeAt(i % key.length),
+        );
+      }
+      const decoy2 = "another_random_string";
+      return decoded;
+    }
+
+    // --- Initialization on Page Load ---
+
+    document.addEventListener("DOMContentLoaded", () => {
+      let hydraCount = getCookie("hydraCount");
+
+      // If the cookie doesn't exist, start with 1 hydra.`	
+      if (hydraCount === null) {
+        hydraCount = "1";
+        setCookie("hydraCount", hydraCount, 7); // Set to expire in 7 days
+      }
+
+      const count = parseInt(hydraCount, 10);
+
+      if (count == 0) {
+        // If count is 0, show the victory message and decode the flag.
+        clearedMessage.style.display = "block";
+        const encodedFlag = "aHR0cHM6Ly90aW55dXJsLmNvbS9kZWZ1bmV4cGVjdGVk";
+        flagElement.textContent = atob(encodedFlag);
+      }
+
+      else {
+        // Otherwise, create the hydras.
+        for (let i = 0; i < count; i++) {
+          createHydra();
+        }
+      }
+    });
+  </script>
+</body>
+
+
+</html>

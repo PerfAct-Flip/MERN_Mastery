@@ -12,6 +12,8 @@ import FilterableList from './components/FilterableList';
 import TabManager from './components/TabManager';
 import FormValidation from'./components/FormValidation'
 import GithubUserCard from './components/GithubUserCard';
+import BlogPostViewer from './components/BlogPost';
+import ThemeToggle from './components/ThemeToggle';
 interface ProjectProps {
   onGoBack: () => void;
   title?: string;
@@ -93,6 +95,18 @@ function App() {
       id: 'githubusercard',
       title: '10. Github User Card',
       component: GithubUserCard,
+      description: 'A project for handling complex logic and input.'
+    },
+    {
+      id: 'blogpostviewer',
+      title: '11. BlogPost Viewer',
+      component: BlogPostViewer,
+      description: 'A project for handling complex logic and input.'
+    },
+    {
+      id: 'themetoggle',
+      title: '11. Theme Toggle',
+      component: ThemeToggle,
       description: 'A project for handling complex logic and input.'
     },
     {
